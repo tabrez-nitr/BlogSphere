@@ -1,10 +1,11 @@
 'use client'
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 function Signup() {
 
+  const router = useRouter();
 
-    
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -26,6 +27,7 @@ function Signup() {
     e.preventDefault();
 
     const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/user/signup`;
+    console.log("api call : ", apiUrl)
     try{
           const response = await fetch(apiUrl,{
             method : 'POST',
@@ -36,16 +38,19 @@ function Signup() {
           })
 
           const result = await response.json();
+          console.log(result)
 
           if(!response.ok){
             throw new Error(result.message || 'something went wrong');
           }
 
             console.log('Signup successful:', result);
+            router.push('/')
+            
 
     }
     catch(error){
-        console.log(error);
+        console.log(error + " there is an error ");
     }
   };
 
@@ -62,7 +67,7 @@ function Signup() {
             <input
               type="text"
               name="fullName"
-              value={formData.name}
+              value={formData.fullName}
               onChange={handleChange}
               required
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"

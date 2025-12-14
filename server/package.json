@@ -11,9 +11,11 @@
     "dev": "nodemon index.js"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "crypto-hash": "^4.0.0",
     "ejs": "^3.1.10",
+    "jsonwebtoken": "^9.0.2",
     "mongose": "^0.0.2-security",
     "nodemon": "^3.1.10"
   }

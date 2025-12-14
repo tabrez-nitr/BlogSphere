@@ -1,8 +1,13 @@
 'use client'
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from "@/useAuthStore";
 
 function SignIn() {
-  const [formData, setFormData] = useState({
+  const router = useRouter();
+  const { checkAuth  }  = useAuthStore();
+  const [ loginError , setLoginError ] = useState(false);
+  const [ formData , setFormData ] = useState({
     email: '',
     password: ''
   });
@@ -15,29 +20,39 @@ function SignIn() {
     }));
   };
 
+
+  //transfering data to backend 
   const handleSubmit = async(e) => {
     e.preventDefault();
+    setLoginError(false);
      
     const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/user/signin`;
-
     try{
-
         const response = await fetch(apiUrl , {
             method : 'POST',
             headers : {
                 'Content-Type' : 'application/json'
             },
-            body : JSON.stringify(formData)
+            body : JSON.stringify(formData),
+            credentials : 'include'
         })
-       const result = await response.json();
+       const result = await response.json(); // contents json file 
+       if(response.ok){
+         await checkAuth();
+
+         router.push('/');
+         return
+       }
        if(!response.ok){
         throw new Error(result.message || 'something went wrong');
        }
          console.log('Signin successful:', result);
+         router.push('/');
 
     }
     catch(error){
         console.log(error);
+        setLoginError(true);
     }
   };
 
@@ -46,6 +61,11 @@ function SignIn() {
       <div className="w-full max-w-md p-8 rounded-xl shadow-lg border border-gray-200">
         <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">Sign In</h2>
 
+        {loginError && (
+          <div className="mb-4 p-3 bg-red-100 text-center text-red-700 rounded-lg text-sm">
+            Invalid Credentials
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

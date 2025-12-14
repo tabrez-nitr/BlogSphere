@@ -1,5 +1,6 @@
 import { createHmac ,randomBytes } from "crypto";
 import mongoose from "mongoose";
+import { generateToken } from "../services/auth.js";
 
 const userScehma = new mongoose.Schema({
     name : {
@@ -44,8 +45,8 @@ userScehma.pre('save' , function(next){
 
     next();
 })
-// our function on model  to match password 
-userScehma.static('matchPassword' ,async function(email, password){
+// our function on model  to match password when we call 
+userScehma.static('matchPasswordAndGenerateToken' ,async function(email, password){
     const user = await this.findOne({email});  // this refers to the model here
     if(!user)
         throw new Error("User not Found");
@@ -57,8 +58,13 @@ userScehma.static('matchPassword' ,async function(email, password){
      
     if (userProvidedHashed !== hashedPassword)
         throw new Error("Password doesn't match");
+
+         // we return token 
+         const token = generateToken(user);
+         console.log(token);
+         return (token);
         
-        return { ...user , password : undefined , salt : undefined }
+        // return { ...user , password : undefined , salt : undefined }
 })
 
 
