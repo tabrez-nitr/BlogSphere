@@ -36,6 +36,8 @@ function SignIn() {
             body : JSON.stringify(formData),
             credentials : 'include'
         })
+
+        
        const result = await response.json(); // contents json file 
        if(response.ok){
          await checkAuth();

@@ -1,9 +1,11 @@
 import React from 'react'
 import Navbar from '@/components/Navbar'
+import AllBlogs from '@/components/AllBlogs'
 
 export default function Home(){
   return <div>
     <Navbar />
+    
     <div className="min-h-screen w-full relative">
   {/* Radial Gradient Background */}
   <div
@@ -13,6 +15,9 @@ export default function Home(){
     }}
   />
      {/* Your Content/Components */}
+     <div className=' relative z-10'>
+     <AllBlogs/>
+     </div>
 </div>
   </div>
 

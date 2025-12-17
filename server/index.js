@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import userRouter from './routes/user.js';
 import cookieParser from 'cookie-parser';
 import { checkForAuthCookie } from './middlewares/auth.js';
+import blogRouter from './routes/blog.js';
+import { Blog } from './modals/blog.js';
 
 
 
@@ -43,6 +45,9 @@ app.use(checkForAuthCookie('token')); // check if cokkie is present with this na
 
 //if any route hits this than useRouter handels the rest of the request
 app.use('/user' , userRouter);
+app.use('/blog' , blogRouter);
+// get all the blogs 
+
 
 // server working on port 
 app.listen(PORT , ()=> {

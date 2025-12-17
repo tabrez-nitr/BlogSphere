@@ -5,6 +5,8 @@ import { generateToken } from '../services/auth.js';
 const userRouter = Router();
 
 console.log("user called ")
+
+// signup 
 userRouter.post('/signup' , async(req , res)=>{
     console.log("signup called")
     const { fullName , email , password } = req.body;
@@ -14,8 +16,9 @@ userRouter.post('/signup' , async(req , res)=>{
         email,
         password
     }) 
-     const token = generateToken(user);
 
+
+      const token = generateToken(user);
       return res.cookie('token',token).status(201).json(user);
 
     }
@@ -26,13 +29,15 @@ userRouter.post('/signup' , async(req , res)=>{
     }
 })
 
+
+// sign in 
 userRouter.post('/signin' , async(req, res)=>{
 
     const { email , password } = req.body;
 
     try{
-         const  token = await User.matchPasswordAndGenerateToken(email , password)
-         const user = await User.findOne({ email }).select('-password -salt');
+         const  token = await User.matchPasswordAndGenerateToken(email , password) 
+         const user = await User.findOne({ email }).select(' -password -salt ');
          return res
          .cookie('token',token)
          .status(200)
@@ -40,8 +45,11 @@ userRouter.post('/signin' , async(req, res)=>{
        }
     catch{
         return res.status(400).json({error : "Invalid Credentials"})
-    } // this is a static method we created on user model to match password
+    } 
+    // this is a static method we created on user model to match password
 })
+
+
 
 // checks if the user is present after reffresh 
 userRouter.get('/check-auth' , (req,res) => {
@@ -62,6 +70,8 @@ userRouter.get('/check-auth' , (req,res) => {
         }
     }
 )
+
+
 
 // logout we clear the cookie 
 userRouter.get('/logout',(req,res)=>{

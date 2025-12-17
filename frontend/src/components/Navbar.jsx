@@ -58,7 +58,7 @@ const Navbar = () => {
                 {user.name} {/* Assuming user object has 'name' property */}
               </span>
               <Link 
-                href="/add-blog" 
+                href="/addBlog" 
                 className="bg-blue-600 text-white px-5 py-2 rounded-full font-medium hover:bg-blue-700 transition"
               >
                 Add Blog

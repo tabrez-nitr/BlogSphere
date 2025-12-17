@@ -31,6 +31,8 @@ const userScehma = new mongoose.Schema({
     }
 },{timestamps : true})
 
+
+// hash the password and save 
 userScehma.pre('save' , function(next){
     const user = this;
     if(!user.isModified('password'))
@@ -45,6 +47,9 @@ userScehma.pre('save' , function(next){
 
     next();
 })
+
+
+
 // our function on model  to match password when we call 
 userScehma.static('matchPasswordAndGenerateToken' ,async function(email, password){
     const user = await this.findOne({email});  // this refers to the model here
